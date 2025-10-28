@@ -5,9 +5,10 @@ Sistema web completo para gerenciamento de clínicas veterinárias, desenvolvido
 ## 🚀 Tecnologias Utilizadas
 
 - **Backend**: Node.js + Express
-- **Banco de Dados**: PostgreSQL
+- **Banco de Dados**: SQLite
 - **Frontend**: HTML5 + CSS3 (sem frameworks)
-- **Dependências**: pg (node-postgres)
+- **Documentação**: Swagger UI + Swagger JSDoc
+- **Dependências**: express, sqlite3, swagger-ui-express, swagger-jsdoc
 
 ## 📁 Estrutura do Projeto
 
@@ -106,6 +107,13 @@ O sistema utiliza um design moderno e responsivo com:
 
 ## 🔧 APIs Disponíveis
 
+### 📚 Documentação Swagger
+A documentação completa da API está disponível através do Swagger UI:
+- **URL**: http://localhost:3000/api-docs
+- **Interface interativa** para testar todas as APIs
+- **Esquemas detalhados** de request/response
+- **Exemplos** para cada endpoint
+
 ### Autenticação
 - `POST /api/login` - Login de funcionários
 
@@ -119,11 +127,19 @@ O sistema utiliza um design moderno e responsivo com:
 
 ## 🚀 Como Usar
 
+### Interface Web
 1. Acesse `http://localhost:3000`
 2. Faça login com as credenciais de teste
 3. Navegue pelo dashboard usando o menu lateral
 4. Acesse "Consultas" para gerenciar agendamentos
 5. Use o formulário para agendar novas consultas
+
+### Documentação da API (Swagger)
+1. Acesse `http://localhost:3000/api-docs`
+2. Explore todas as APIs disponíveis
+3. Teste os endpoints diretamente na interface
+4. Veja exemplos de request/response
+5. Consulte os esquemas de dados detalhados
 
 ## 📝 Próximos Passos
 

@@ -9,12 +9,20 @@
   },
   "dependencies": {
     "express": "^4.18.2",
-    "sqlite3": "^5.1.6"
+    "sqlite3": "^5.1.6",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {
     "nodemon": "^3.0.1"
   },
-  "keywords": ["veterinaria", "clinica", "pets", "nodejs", "express"],
+  "keywords": [
+    "veterinaria",
+    "clinica",
+    "pets",
+    "nodejs",
+    "express"
+  ],
   "author": "Petship",
   "license": "MIT"
 }

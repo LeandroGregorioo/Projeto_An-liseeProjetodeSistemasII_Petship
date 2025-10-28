@@ -1,9 +1,96 @@
 const express = require('express');
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
+const swaggerJsdoc = require('swagger-jsdoc');
+const swaggerUi = require('swagger-ui-express');
 
 const app = express();
 const PORT = 3000;
+
+// Configuração do Swagger
+const swaggerOptions = {
+    definition: {
+        openapi: '3.0.0',
+        info: {
+            title: 'Petship API',
+            version: '1.0.0',
+            description: 'API para Sistema de Gerenciamento de Clínica Veterinária',
+            contact: {
+                name: 'Leandro Gregorio',
+                email: 'leandrogregoriomusic@gmail.com'
+            }
+        },
+        servers: [
+            {
+                url: `http://localhost:${PORT}`,
+                description: 'Servidor de Desenvolvimento'
+            }
+        ],
+        components: {
+            schemas: {
+                Funcionario: {
+                    type: 'object',
+                    properties: {
+                        id: { type: 'integer', example: 1 },
+                        nome: { type: 'string', example: 'Admin' },
+                        email: { type: 'string', example: 'admin@petship.com' },
+                        cargo: { type: 'string', example: 'Recepcionista' }
+                    }
+                },
+                Animal: {
+                    type: 'object',
+                    properties: {
+                        id: { type: 'integer', example: 1 },
+                        nome: { type: 'string', example: 'Rex' },
+                        especie: { type: 'string', example: 'Cachorro' },
+                        dono_id: { type: 'integer', example: 1 },
+                        dono_nome: { type: 'string', example: 'João Silva' }
+                    }
+                },
+                Consulta: {
+                    type: 'object',
+                    properties: {
+                        id: { type: 'integer', example: 1 },
+                        data_consulta: { type: 'string', format: 'date', example: '2024-01-15' },
+                        hora_consulta: { type: 'string', format: 'time', example: '09:00:00' },
+                        descricao: { type: 'string', example: 'Consulta de rotina' },
+                        animal_id: { type: 'integer', example: 1 },
+                        funcionario_id: { type: 'integer', example: 1 },
+                        animal_nome: { type: 'string', example: 'Rex' },
+                        dono_nome: { type: 'string', example: 'João Silva' },
+                        funcionario_nome: { type: 'string', example: 'Admin' }
+                    }
+                },
+                LoginRequest: {
+                    type: 'object',
+                    required: ['email', 'senha'],
+                    properties: {
+                        email: { type: 'string', example: 'admin@petship.com' },
+                        senha: { type: 'string', example: '123' }
+                    }
+                },
+                LoginResponse: {
+                    type: 'object',
+                    properties: {
+                        success: { type: 'boolean', example: true },
+                        user: { $ref: '#/components/schemas/Funcionario' },
+                        message: { type: 'string', example: 'Login realizado com sucesso' }
+                    }
+                },
+                ErrorResponse: {
+                    type: 'object',
+                    properties: {
+                        success: { type: 'boolean', example: false },
+                        message: { type: 'string', example: 'Erro interno do servidor' }
+                    }
+                }
+            }
+        }
+    },
+    apis: ['./server.js']
+};
+
+const swaggerSpec = swaggerJsdoc(swaggerOptions);
 
 // Configuração do banco de dados SQLite
 const db = new sqlite3.Database('./petship.db', (err) => {
@@ -86,7 +173,41 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
-// API de Login
+// Swagger UI
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
+/**
+ * @swagger
+ * /api/login:
+ *   post:
+ *     summary: Realizar login de funcionário
+ *     tags: [Autenticação]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/LoginRequest'
+ *     responses:
+ *       200:
+ *         description: Login realizado com sucesso
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/LoginResponse'
+ *       400:
+ *         description: Dados inválidos
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ *       500:
+ *         description: Erro interno do servidor
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ */
 app.post('/api/login', (req, res) => {
     const { email, senha } = req.body;
     
@@ -125,7 +246,28 @@ app.post('/api/login', (req, res) => {
     });
 });
 
-// API para buscar todas as consultas
+/**
+ * @swagger
+ * /api/consultas:
+ *   get:
+ *     summary: Listar todas as consultas
+ *     tags: [Consultas]
+ *     responses:
+ *       200:
+ *         description: Lista de consultas retornada com sucesso
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Consulta'
+ *       500:
+ *         description: Erro interno do servidor
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ */
 app.get('/api/consultas', (req, res) => {
     const query = `
         SELECT c.*, a.nome as animal_nome, a.especie, d.nome as dono_nome, f.nome as funcionario_nome
@@ -148,7 +290,67 @@ app.get('/api/consultas', (req, res) => {
     });
 });
 
-// API para criar nova consulta
+/**
+ * @swagger
+ * /api/consultas:
+ *   post:
+ *     summary: Criar nova consulta
+ *     tags: [Consultas]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - data_consulta
+ *               - hora_consulta
+ *               - animal_id
+ *               - funcionario_id
+ *             properties:
+ *               data_consulta:
+ *                 type: string
+ *                 format: date
+ *                 example: "2024-01-15"
+ *               hora_consulta:
+ *                 type: string
+ *                 format: time
+ *                 example: "09:00:00"
+ *               animal_id:
+ *                 type: integer
+ *                 example: 1
+ *               funcionario_id:
+ *                 type: integer
+ *                 example: 1
+ *               descricao:
+ *                 type: string
+ *                 example: "Consulta de rotina"
+ *     responses:
+ *       200:
+ *         description: Consulta criada com sucesso
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 consulta:
+ *                   $ref: '#/components/schemas/Consulta'
+ *       400:
+ *         description: Dados inválidos
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ *       500:
+ *         description: Erro interno do servidor
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ */
 app.post('/api/consultas', (req, res) => {
     const { data_consulta, hora_consulta, animal_id, funcionario_id, descricao } = req.body;
     
@@ -187,7 +389,28 @@ app.post('/api/consultas', (req, res) => {
     });
 });
 
-// API para buscar animais
+/**
+ * @swagger
+ * /api/animais:
+ *   get:
+ *     summary: Listar todos os animais
+ *     tags: [Animais]
+ *     responses:
+ *       200:
+ *         description: Lista de animais retornada com sucesso
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Animal'
+ *       500:
+ *         description: Erro interno do servidor
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ */
 app.get('/api/animais', (req, res) => {
     const query = `
         SELECT a.*, d.nome as dono_nome
@@ -208,7 +431,28 @@ app.get('/api/animais', (req, res) => {
     });
 });
 
-// API para buscar funcionários
+/**
+ * @swagger
+ * /api/funcionarios:
+ *   get:
+ *     summary: Listar todos os funcionários
+ *     tags: [Funcionários]
+ *     responses:
+ *       200:
+ *         description: Lista de funcionários retornada com sucesso
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Funcionario'
+ *       500:
+ *         description: Erro interno do servidor
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ */
 app.get('/api/funcionarios', (req, res) => {
     const query = 'SELECT id, nome, cargo FROM funcionarios ORDER BY nome';
     db.all(query, [], (err, rows) => {
