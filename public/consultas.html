@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Petship - Consultas</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Menu lateral de navegação -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">🐾</div>
+                <div class="brand-name">Petship</div>
+            </div>
+            
+            <div class="nav-menu">
+                <div class="nav-item has-submenu">
+                    <a href="#" class="nav-link">
+                        <span class="nav-icon icon-pets"></span>
+                        <span class="nav-text">Pets</span>
+                        <span class="nav-arrow">▼</span>
+                    </a>
+                    <div class="submenu">
+                        <a href="#" class="nav-link">
+                            <span class="nav-icon icon-search"></span>
+                            <span class="nav-text">Buscar Pet</span>
+                        </a>
+                        <a href="#" class="nav-link">
+                            <span class="nav-icon icon-add"></span>
+                            <span class="nav-text">Adicionar Novo Pet</span>
+                        </a>
+                        <a href="#" class="nav-link">
+                            <span class="nav-icon icon-history"></span>
+                            <span class="nav-text">Histórico</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="nav-item">
+                    <a href="#" class="nav-link">
+                        <span class="nav-icon icon-owners"></span>
+                        <span class="nav-text">Donos</span>
+                        <span class="nav-arrow">▶</span>
+                    </a>
+                </div>
+                
+                <div class="nav-item">
+                    <a href="#" class="nav-link">
+                        <span class="nav-icon icon-sellers"></span>
+                        <span class="nav-text">Vendedores</span>
+                        <span class="nav-arrow">▶</span>
+                    </a>
+                </div>
+                
+                <div class="nav-item">
+                    <a href="consultas.html" class="nav-link active">
+                        <span class="nav-icon icon-consultations"></span>
+                        <span class="nav-text">Consultas</span>
+                        <span class="nav-arrow">▶</span>
+                    </a>
+                </div>
+                
+                <div class="nav-item has-submenu">
+                    <a href="#" class="nav-link">
+                        <span class="nav-icon icon-services"></span>
+                        <span class="nav-text">Serviços</span>
+                        <span class="nav-arrow">▼</span>
+                    </a>
+                    <div class="submenu">
+                        <a href="#" class="nav-link">
+                            <span class="nav-icon icon-manage"></span>
+                            <span class="nav-text">Gerenciar Serviços</span>
+                        </a>
+                        <a href="#" class="nav-link">
+                            <span class="nav-icon icon-stock"></span>
+                            <span class="nav-text">Controle de Estoque</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        
+        <!-- Conteúdo principal -->
+        <main class="main-content">
+            <h1 style="margin-bottom: 30px; color: #333;">📅 Gerenciamento de Consultas</h1>
+            
+            <div class="two-columns">
+                <!-- Formulário de Agendamento -->
+                <div class="column">
+                    <h3>Agendar Consulta</h3>
+                    <form id="consultaForm">
+                        <div class="form-group">
+                            <label for="data_consulta" class="form-label">Data da Consulta</label>
+                            <input 
+                                type="date" 
+                                id="data_consulta" 
+                                name="data_consulta" 
+                                class="form-input" 
+                                required
+                            >
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="hora_consulta" class="form-label">Hora da Consulta</label>
+                            <input 
+                                type="time" 
+                                id="hora_consulta" 
+                                name="hora_consulta" 
+                                class="form-input" 
+                                required
+                            >
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="animal_id" class="form-label">Animal</label>
+                            <select id="animal_id" name="animal_id" class="form-input" required>
+                                <option value="">Selecione um animal</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="funcionario_id" class="form-label">Veterinário</label>
+                            <select id="funcionario_id" name="funcionario_id" class="form-input" required>
+                                <option value="">Selecione um veterinário</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="descricao" class="form-label">Descrição</label>
+                            <textarea 
+                                id="descricao" 
+                                name="descricao" 
+                                class="form-input" 
+                                rows="3" 
+                                placeholder="Descreva o motivo da consulta..."
+                            ></textarea>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary btn-block">
+                            Agendar Consulta
+                        </button>
+                        
+                        <div id="formMessage" class="error-message"></div>
+                    </form>
+                </div>
+                
+                <!-- Lista de Consultas -->
+                <div class="column">
+                    <h3>Consultas Agendadas</h3>
+                    <div class="table-container">
+                        <table class="table" id="consultasTable">
+                            <thead>
+                                <tr>
+                                    <th>Data</th>
+                                    <th>Hora</th>
+                                    <th>Animal</th>
+                                    <th>Veterinário</th>
+                                    <th>Descrição</th>
+                                </tr>
+                            </thead>
+                            <tbody id="consultasBody">
+                                <tr>
+                                    <td colspan="5" style="text-align: center; padding: 20px; color: #666;">
+                                        Carregando consultas...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Funcionalidade do menu dropdown
+        document.querySelectorAll('.has-submenu').forEach(item => {
+            const link = item.querySelector('.nav-link');
+            const submenu = item.querySelector('.submenu');
+            const arrow = item.querySelector('.nav-arrow');
+            
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                submenu.classList.toggle('active');
+                arrow.style.transform = submenu.classList.contains('active') ? 'rotate(90deg)' : 'rotate(0deg)';
+            });
+        });
+        
+        // Carregar dados iniciais
+        document.addEventListener('DOMContentLoaded', function() {
+            carregarAnimais();
+            carregarFuncionarios();
+            carregarConsultas();
+        });
+        
+        // Carregar lista de animais
+        async function carregarAnimais() {
+            try {
+                const response = await fetch('/api/animais');
+                const animais = await response.json();
+                
+                const select = document.getElementById('animal_id');
+                select.innerHTML = '<option value="">Selecione um animal</option>';
+                
+                animais.forEach(animal => {
+                    const option = document.createElement('option');
+                    option.value = animal.id;
+                    option.textContent = `${animal.nome} (${animal.especie}) - ${animal.dono_nome}`;
+                    select.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Erro ao carregar animais:', error);
+            }
+        }
+        
+        // Carregar lista de funcionários
+        async function carregarFuncionarios() {
+            try {
+                const response = await fetch('/api/funcionarios');
+                const funcionarios = await response.json();
+                
+                const select = document.getElementById('funcionario_id');
+                select.innerHTML = '<option value="">Selecione um veterinário</option>';
+                
+                funcionarios.forEach(funcionario => {
+                    const option = document.createElement('option');
+                    option.value = funcionario.id;
+                    option.textContent = `${funcionario.nome} (${funcionario.cargo})`;
+                    select.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Erro ao carregar funcionários:', error);
+            }
+        }
+        
+        // Carregar consultas
+        async function carregarConsultas() {
+            try {
+                const response = await fetch('/api/consultas');
+                const consultas = await response.json();
+                
+                const tbody = document.getElementById('consultasBody');
+                
+                if (consultas.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 20px; color: #666;">Nenhuma consulta agendada</td></tr>';
+                    return;
+                }
+                
+                tbody.innerHTML = '';
+                
+                consultas.forEach(consulta => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${new Date(consulta.data_consulta).toLocaleDateString('pt-BR')}</td>
+                        <td>${consulta.hora_consulta}</td>
+                        <td>${consulta.animal_nome || 'N/A'}</td>
+                        <td>${consulta.funcionario_nome || 'N/A'}</td>
+                        <td>${consulta.descricao || '-'}</td>
+                    `;
+                    tbody.appendChild(row);
+                });
+            } catch (error) {
+                console.error('Erro ao carregar consultas:', error);
+                document.getElementById('consultasBody').innerHTML = 
+                    '<tr><td colspan="5" style="text-align: center; padding: 20px; color: #dc3545;">Erro ao carregar consultas</td></tr>';
+            }
+        }
+        
+        // Submissão do formulário
+        document.getElementById('consultaForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const data = {
+                data_consulta: formData.get('data_consulta'),
+                hora_consulta: formData.get('hora_consulta'),
+                animal_id: parseInt(formData.get('animal_id')),
+                funcionario_id: parseInt(formData.get('funcionario_id')),
+                descricao: formData.get('descricao')
+            };
+            
+            const messageDiv = document.getElementById('formMessage');
+            const submitBtn = this.querySelector('button[type="submit"]');
+            
+            // Mostrar loading
+            submitBtn.textContent = 'Agendando...';
+            submitBtn.disabled = true;
+            messageDiv.style.display = 'none';
+            
+            try {
+                const response = await fetch('/api/consultas', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    // Sucesso - limpar formulário e recarregar consultas
+                    this.reset();
+                    messageDiv.textContent = 'Consulta agendada com sucesso!';
+                    messageDiv.style.backgroundColor = '#d4edda';
+                    messageDiv.style.borderColor = '#c3e6cb';
+                    messageDiv.style.color = '#155724';
+                    messageDiv.style.display = 'block';
+                    
+                    // Recarregar lista de consultas
+                    carregarConsultas();
+                } else {
+                    // Erro
+                    messageDiv.textContent = result.message || 'Erro ao agendar consulta';
+                    messageDiv.style.backgroundColor = '#f8d7da';
+                    messageDiv.style.borderColor = '#f5c6cb';
+                    messageDiv.style.color = '#721c24';
+                    messageDiv.style.display = 'block';
+                }
+            } catch (error) {
+                console.error('Erro:', error);
+                messageDiv.textContent = 'Erro de conexão. Tente novamente.';
+                messageDiv.style.backgroundColor = '#f8d7da';
+                messageDiv.style.borderColor = '#f5c6cb';
+                messageDiv.style.color = '#721c24';
+                messageDiv.style.display = 'block';
+            } finally {
+                // Restaurar botão
+                submitBtn.textContent = 'Agendar Consulta';
+                submitBtn.disabled = false;
+            }
+        });
+        
+        // Definir data mínima como hoje
+        document.getElementById('data_consulta').min = new Date().toISOString().split('T')[0];
+    </script>
+</body>
+</html>

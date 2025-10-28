@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Petship - Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Menu lateral de navegação -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">🐾</div>
+                <div class="brand-name">Petship</div>
+            </div>
+            
+            <div class="nav-menu">
+                <div class="nav-item has-submenu">
+                    <a href="#" class="nav-link">
+                        <span class="nav-icon icon-pets"></span>
+                        <span class="nav-text">Pets</span>
+                        <span class="nav-arrow">▼</span>
+                    </a>
+                    <div class="submenu">
+                        <a href="#" class="nav-link">
+                            <span class="nav-icon icon-search"></span>
+                            <span class="nav-text">Buscar Pet</span>
+                        </a>
+                        <a href="#" class="nav-link">
+                            <span class="nav-icon icon-add"></span>
+                            <span class="nav-text">Adicionar Novo Pet</span>
+                        </a>
+                        <a href="#" class="nav-link">
+                            <span class="nav-icon icon-history"></span>
+                            <span class="nav-text">Histórico</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="nav-item">
+                    <a href="#" class="nav-link">
+                        <span class="nav-icon icon-owners"></span>
+                        <span class="nav-text">Donos</span>
+                        <span class="nav-arrow">▶</span>
+                    </a>
+                </div>
+                
+                <div class="nav-item">
+                    <a href="#" class="nav-link">
+                        <span class="nav-icon icon-sellers"></span>
+                        <span class="nav-text">Vendedores</span>
+                        <span class="nav-arrow">▶</span>
+                    </a>
+                </div>
+                
+                <div class="nav-item">
+                    <a href="consultas.html" class="nav-link">
+                        <span class="nav-icon icon-consultations"></span>
+                        <span class="nav-text">Consultas</span>
+                        <span class="nav-arrow">▶</span>
+                    </a>
+                </div>
+                
+                <div class="nav-item has-submenu">
+                    <a href="#" class="nav-link">
+                        <span class="nav-icon icon-services"></span>
+                        <span class="nav-text">Serviços</span>
+                        <span class="nav-arrow">▼</span>
+                    </a>
+                    <div class="submenu">
+                        <a href="#" class="nav-link">
+                            <span class="nav-icon icon-manage"></span>
+                            <span class="nav-text">Gerenciar Serviços</span>
+                        </a>
+                        <a href="#" class="nav-link">
+                            <span class="nav-icon icon-stock"></span>
+                            <span class="nav-text">Controle de Estoque</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        
+        <!-- Conteúdo principal -->
+        <main class="main-content">
+            <div class="welcome-card fade-in">
+                <h1>Bem-vindo ao Petship</h1>
+                <p>
+                    Sistema completo de gerenciamento para clínicas veterinárias.<br>
+                    Gerencie pets, donos, consultas e muito mais de forma simples e eficiente.
+                </p>
+            </div>
+            
+            <!-- Cards de resumo rápido -->
+            <div class="two-columns">
+                <div class="column">
+                    <h3>📊 Resumo Rápido</h3>
+                    <p>Visualize estatísticas importantes do seu sistema veterinário.</p>
+                    <div style="margin-top: 20px;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                            <span>Total de Pets:</span>
+                            <strong id="totalPets">-</strong>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                            <span>Consultas Hoje:</span>
+                            <strong id="consultasHoje">-</strong>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                            <span>Total de Donos:</span>
+                            <strong id="totalDonos">-</strong>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="column">
+                    <h3>⚡ Ações Rápidas</h3>
+                    <p>Acesse rapidamente as funcionalidades mais utilizadas.</p>
+                    <div style="margin-top: 20px;">
+                        <a href="consultas.html" class="btn btn-primary" style="display: block; margin-bottom: 10px; text-align: center;">
+                            📅 Agendar Consulta
+                        </a>
+                        <a href="#" class="btn btn-success" style="display: block; text-align: center;">
+                            🐾 Cadastrar Pet
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Funcionalidade do menu dropdown
+        document.querySelectorAll('.has-submenu').forEach(item => {
+            const link = item.querySelector('.nav-link');
+            const submenu = item.querySelector('.submenu');
+            const arrow = item.querySelector('.nav-arrow');
+            
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                submenu.classList.toggle('active');
+                arrow.style.transform = submenu.classList.contains('active') ? 'rotate(90deg)' : 'rotate(0deg)';
+            });
+        });
+        
+        // Carregar dados de resumo (simulado por enquanto)
+        function carregarResumo() {
+            // Simular dados - em uma aplicação real, isso viria de APIs
+            document.getElementById('totalPets').textContent = '12';
+            document.getElementById('consultasHoje').textContent = '3';
+            document.getElementById('totalDonos').textContent = '8';
+        }
+        
+        // Carregar dados quando a página carregar
+        document.addEventListener('DOMContentLoaded', carregarResumo);
+    </script>
+</body>
+</html>
