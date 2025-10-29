@@ -141,6 +141,33 @@ A documentação completa da API está disponível através do Swagger UI:
 4. Veja exemplos de request/response
 5. Consulte os esquemas de dados detalhados
 
+## 🧪 Testes e Coverage
+
+O projeto inclui uma suíte completa de testes automatizados:
+
+### Executar Testes
+```bash
+# Executar todos os testes
+npm test
+
+# Executar testes em modo watch
+npm run test:watch
+
+# Executar testes com coverage
+npm run test:coverage
+```
+
+### Relatório de Coverage
+Após executar `npm run test:coverage`, o relatório HTML estará disponível em:
+- **Arquivo**: `coverage/index.html`
+- **Abrir no navegador** para visualizar o relatório completo
+
+### Cobertura de Testes
+- ✅ **Testes de Configuração**: Package.json, dependências, estrutura
+- ✅ **Testes de Banco de Dados**: Arquivos SQL e estrutura
+- ✅ **Testes de APIs**: Endpoints e validações (em desenvolvimento)
+- ✅ **Testes de Swagger**: Documentação e configuração (em desenvolvimento)
+
 ## 📝 Próximos Passos
 
 Para expandir o sistema, considere implementar:
@@ -149,6 +176,7 @@ Para expandir o sistema, considere implementar:
 - Controle de estoque
 - Relatórios e estatísticas
 - Sistema de notificações
+- Testes de integração completos
 
 ## 🤝 Contribuição
 
